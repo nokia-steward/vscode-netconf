@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/nokia-steward/vscode-netconf/actions/workflows/ci.yml/badge.svg)](https://github.com/nokia-steward/vscode-netconf/actions/workflows/ci.yml)
 [![Security](https://github.com/nokia-steward/vscode-netconf/actions/workflows/security.yml/badge.svg)](https://github.com/nokia-steward/vscode-netconf/actions/workflows/security.yml)
-[![Marketplace](https://vsmarketplacebadges.dev/installs-short/Nokia.netconf-client.svg?label=marketplace%20installs&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=Nokia.netconf-client)
+[![Installs](https://vsmarketplacebadges.dev/installs/Nokia.netconf-client.svg?label=Installs&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=Nokia.netconf-client)
 [![Release](https://img.shields.io/github/v/release/nokia-steward/vscode-netconf)](https://github.com/nokia-steward/vscode-netconf/releases)
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/nokia-steward/vscode-netconf/blob/main/LICENSE)
 [![VS Code](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnokia-steward%2Fvscode-netconf%2Fmain%2Fpackage.json&query=%24.engines.vscode&label=VS%20Code&color=blue)](https://github.com/nokia-steward/vscode-netconf/blob/main/package.json)
