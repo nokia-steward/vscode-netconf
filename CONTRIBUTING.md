@@ -27,6 +27,13 @@ npm run package     # builds the .vsix
 npm run audit       # npm audit of the production dependencies
 ```
 
+The extension host tests are not part of CI. They download VS Code and open a window; run them
+against the minimum release in `engines.vscode` after dependency changes:
+
+```bash
+npm run compile && VSCODE_VERSION=1.101.0 npm run test:integration
+```
+
 ## Dependencies
 
 - `package-lock.json` is committed. Use `npm ci` to install and commit lockfile changes with the `package.json` change that caused them.

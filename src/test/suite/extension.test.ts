@@ -29,6 +29,13 @@ suite('Extension Test Suite', () => {
     assert.ok(commands.includes('netconf.xml.revealInNavigator'), 'netconf.xml.revealInNavigator should be registered');
   });
 
+  test('he loads in the extension host', () => {
+    // he 2.x is ESM-only and getSchemas() loads it with require(); VS Code 1.95 (Node 20.18) fails here.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const he = require('he') as { decode: (s: string) => string };
+    assert.strictEqual(he.decode('a &lt;b&gt; &amp; c'), 'a <b> & c');
+  });
+
   test('executeCommand netconf.xml.openNavigator does not throw', async () => {
     await assert.doesNotReject(
       async () => vscode.commands.executeCommand('netconf.xml.openNavigator'),
