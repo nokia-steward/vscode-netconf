@@ -7,10 +7,10 @@
 [![CI](https://github.com/nokia-steward/vscode-netconf/actions/workflows/ci.yml/badge.svg)](https://github.com/nokia-steward/vscode-netconf/actions/workflows/ci.yml)
 [![Security](https://github.com/nokia-steward/vscode-netconf/actions/workflows/security.yml/badge.svg)](https://github.com/nokia-steward/vscode-netconf/actions/workflows/security.yml)
 [![Installs](https://vsmarketplacebadges.dev/installs/Nokia.netconf-client.svg?label=Installs&color=007ACC)](https://marketplace.visualstudio.com/items?itemName=Nokia.netconf-client)
-[![Release](https://img.shields.io/github/v/release/nokia-steward/vscode-netconf)](https://github.com/nokia-steward/vscode-netconf/releases)
-[![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/nokia-steward/vscode-netconf/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/nokia-steward/vscode-netconf?label=Release)](https://github.com/nokia-steward/vscode-netconf/releases)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/nokia-steward/vscode-netconf/blob/main/LICENSE)
 [![VS Code](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnokia-steward%2Fvscode-netconf%2Fmain%2Fpackage.json&query=%24.engines.vscode&label=VS%20Code&color=blue)](https://github.com/nokia-steward/vscode-netconf/blob/main/package.json)
-[![Examples](https://img.shields.io/badge/examples-netconf--examples-blue)](https://github.com/nokia-steward/netconf-examples)
+[![Examples](https://img.shields.io/badge/Examples-netconf--xml-blue)](https://github.com/nokia-steward/netconf-examples)
 
 An interactive [NETCONF](https://www.rfc-editor.org/rfc/rfc6241.html) client inside Visual Studio Code.
 Connect to NETCONF servers such as Nokia SR OS and SR Linux routers, send `<rpc>` requests straight from the editor, work with candidate datastores and event notifications, and navigate large XML responses with the built-in XML Navigator.
