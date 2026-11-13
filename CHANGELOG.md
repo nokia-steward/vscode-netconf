@@ -131,6 +131,14 @@ Notable changes to the "vscode-netconf" extension are documented in this file.
 * New GitHub workflows: CI (lint, type check, unit tests, VSIX build) and security
   (`npm audit`), plus Dependabot for npm and GitHub Actions.
 
+### [3.2.1]
+* Requires VS Code 1.101 or newer. 3.2.0 ships `he` 2.0, which older VS Code releases running
+  extensions on Node 20.18 cannot load, so "Download YANG modules" failed there. On VS Code
+  older than 1.101, use 3.1.0 (Extensions view: "Install Specific Version...").
+* Type definitions aligned with the new minimum: `@types/vscode` 1.101, `@types/node` 22.
+* Extension host test that loads `he`; `VSCODE_VERSION` selects the VS Code release for
+  `npm run test:integration`.
+
 ---
 
 **Copyright (c) 2026 NOKIA**

@@ -14,13 +14,10 @@ updates:
         dependency-type: development
         update-types: [minor, patch]
     ignore:
-      # Types must match the oldest supported VS Code (engines.vscode ^1.95, Node 20 extension host).
+      # Types must match the oldest supported VS Code (engines.vscode ^1.101, Node 22 extension host).
       - dependency-name: "@types/vscode"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
       - dependency-name: "@types/node"
-        update-types: ["version-update:semver-major"]
-      # vitest 5 needs @types/node 22 or newer.
-      - dependency-name: vitest
         update-types: ["version-update:semver-major"]
       # ESLint 10 needs the flat-config migration; typescript-eslint 8 supports TypeScript < 6.1.
       - dependency-name: eslint
