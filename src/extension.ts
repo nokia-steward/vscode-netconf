@@ -164,7 +164,7 @@ export async function activate(context: vscode.ExtensionContext) {
     
     context.subscriptions.push(vscode.commands.registerCommand('netconf.examples', async () => {
         let gitPath = vscode.workspace.getConfiguration('git').get<string>('defaultCloneDirectory') || os.homedir();
-        const gitRepo = vscode.workspace.getConfiguration("netconf").get<string>("examplesURL") || "https://github.com/nokia/netconf-examples.git";
+        const gitRepo = vscode.workspace.getConfiguration("netconf").get<string>("examplesURL") || "https://github.com/nokia-steward/netconf-examples.git";
 
         gitPath = gitPath.replace(/^~/, os.homedir());
 

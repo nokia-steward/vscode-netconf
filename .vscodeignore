@@ -1,0 +1,16 @@
+.github/**
+.vscode/**
+.vscode-test/**
+.dependencygraph/**
+src/**
+scripts/**
+out/test/**
+**/*.map
+**/*.ts
+**/*.test.*
+.eslintrc.json
+.gitignore
+tsconfig.json
+vitest.config.ts
+CONTRIBUTING.md
+SECURITY.md

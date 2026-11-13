@@ -32,7 +32,7 @@ Notable changes to the "vscode-netconf" extension are documented in this file.
 
 ### [1.2.1]
 * Improved error-handling for Ciena supporting XML tags to fix:
-  https://github.com/nokia/vscode-netconf/issues/2
+  https://github.com/nokia-steward/vscode-netconf/issues/2
 
 ### [2.0.0]
 * New user-interface: NETCONF view (check activity bar/side bar)
@@ -115,6 +115,20 @@ Notable changes to the "vscode-netconf" extension are documented in this file.
 
 ### [3.1.0]
 * Updated command contributions for containerlab extension intergation based on [#565](https://github.com/srl-labs/vscode-containerlab/issues/565). Raised another request [#568](https://github.com/srl-labs/vscode-containerlab/issues/568) to provide better control for menu structure and icon choices.
+
+### [3.2.0]
+* The project moved to [nokia-steward/vscode-netconf](https://github.com/nokia-steward/vscode-netconf).
+  The NETCONF examples moved to [nokia-steward/netconf-examples](https://github.com/nokia-steward/netconf-examples):
+  "add netconf examples to workspace" now clones from there. If you changed `netconf.examplesURL`
+  to the old `nokia/netconf-examples` URL, update or reset it.
+* Security: `fast-xml-parser` upgraded to 5.12 (GHSA-gh4j-gqv2-49f6, GHSA-474x-hrwr-fgx4).
+  Parsing, validation and `<hello>` building are unchanged.
+* Removed the unused runtime dependencies `@xmldom/xmldom`, `xpath` and `license-checker`.
+* Development tools upgraded (`esbuild` 0.28, `mocha` 12, patched `glob` and `minimatch`), so
+  `npm audit` reports no known vulnerabilities.
+* `package-lock.json` is now committed. The VSIX no longer contains sources, tests or tool configs.
+* New GitHub workflows: CI (lint, type check, unit tests, VSIX build) and security
+  (`npm audit`), plus Dependabot for npm and GitHub Actions.
 
 ---
 

@@ -1,158 +1,97 @@
-# NETCONF CLIENT for Visual Studio Code
+![NOKIA](https://raw.githubusercontent.com/nokia-steward/vscode-netconf/main/resources/NOKIA.png)
 
-## About
+---
 
-This extension adds an interactive NETCONF client to Visual Studio Code, connecting to NETCONF servers such as NOKIA IP routers (SR OS and SRLinux). It brings NETCONF into the editor so you can manage modern network equipment directly from VS Code using the standard NETCONF protocol.
+# NETCONF client for Visual Studio Code
 
-The extension is written in TypeScript and runs on Windows, macOS, and Linux. Remote SSH is supported for lab access over private networks, including via SSH jump hosts and containerlab. It has been validated with VS Code, code-server, and Cursor.
+[![CI](https://github.com/nokia-steward/vscode-netconf/actions/workflows/ci.yml/badge.svg)](https://github.com/nokia-steward/vscode-netconf/actions/workflows/ci.yml)
+[![Security](https://github.com/nokia-steward/vscode-netconf/actions/workflows/security.yml/badge.svg)](https://github.com/nokia-steward/vscode-netconf/actions/workflows/security.yml)
+[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/Nokia.netconf-client?logo=visualstudiocode&logoColor=white&label=marketplace)](https://marketplace.visualstudio.com/items?itemName=Nokia.netconf-client)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/Nokia.netconf-client)](https://marketplace.visualstudio.com/items?itemName=Nokia.netconf-client)
+[![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/nokia-steward/vscode-netconf/blob/main/LICENSE)
+[![VS Code](https://img.shields.io/badge/VS%20Code-1.95%2B-blue)](https://code.visualstudio.com/)
+[![Examples](https://img.shields.io/badge/examples-netconf--examples-blue)](https://github.com/nokia-steward/netconf-examples)
 
-## Build
+An interactive [NETCONF](https://www.rfc-editor.org/rfc/rfc6241.html) client inside Visual Studio Code.
+Connect to NETCONF servers such as Nokia SR OS and SR Linux routers, send `<rpc>` requests straight from the editor, work with candidate datastores and event notifications, and navigate large XML responses with the built-in XML Navigator.
+It runs on Windows, macOS and Linux, works over Remote SSH and with containerlab, and has been validated with VS Code, code-server and Cursor.
 
-**Prerequisites:** [Node.js](https://nodejs.org/) and npm.
+This project is a **Nokia-initiated open-source effort**, licensed under the [BSD 3-Clause License](https://github.com/nokia-steward/vscode-netconf/blob/main/LICENSE).
+Contributions are welcome: bug reports, feature requests, examples and code.
 
-Clone the repository, install dependencies, and package the extension (compile runs automatically via `vscode:prepublish`). See the [VS Code publishing documentation](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) for more on `vsce` and publishing.
+> **Related projects**
+>
+> * [`netconf-examples`](https://github.com/nokia-steward/netconf-examples): the `<rpc>` library the extension adds to your workspace.
+> * Ansible collections [`nokia.sros`](https://galaxy.ansible.com/ui/repo/published/nokia/sros) and [`nokia.openconfig`](https://galaxy.ansible.com/ui/repo/published/nokia/openconfig) for automating the same devices.
 
-```bash
-git clone https://github.com/nokia/vscode-netconf
-cd vscode-netconf
-npm install
-npx vsce package
-```
+---
 
-This produces a `.vsix` file that can be installed directly in VS Code and Cursor.
+## Quick start
 
-## Contributions
+1. **Install** *NETCONF client for Visual Studio Code* from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=Nokia.netconf-client), or run `code --install-extension netconf-client-<version>.vsix` with a VSIX from the [releases](https://github.com/nokia-steward/vscode-netconf/releases).
+2. **Add a device.** Open the **NETCONF** view in the activity bar and click **+** in *NETCONF DEVICES*. Enter host, port (default 830), username and password; the password goes to the VS Code secret storage.
+3. **Connect.** Click the connect icon next to the device. The session shows up in *NETCONF CONNECTIONS*, with the server capabilities, `<hello>` and per-session logs in the OUTPUT channel.
+4. **Get examples.** Click the cloud-download icon in *NETCONF DEVICES*. The extension clones [`nokia-steward/netconf-examples`](https://github.com/nokia-steward/netconf-examples) (into `git.defaultCloneDirectory`, else your home directory) and adds it to the workspace.
+5. **Send an RPC.** Open an example XML file and click **Send custom &lt;rpc&gt;** (run button in the editor title). Responses open in a new editor. Press `Cmd+Shift+V` / `Ctrl+Shift+V` to open the XML Navigator next to it.
 
-Contributions are welcome. Open an [issue](https://github.com/nokia/vscode-netconf/issues) for bugs or ideas, or send a pull request. We’re happy to review and merge.
+![getting-started](https://raw.githubusercontent.com/nokia-steward/vscode-netconf/main/resources/getting-started.gif)
 
-## Getting Started!
+---
 
-![getting-started](https://raw.githubusercontent.com/nokia/vscode-netconf/master/resources/getting-started.gif)
+## Features
 
-NETCONF server settings are persisted as part of the extension settings. For common cases like adding or deleting server entries, open the NETCONF view from the activity bar and you will have direct access to
-the server and connection list.
+* **NETCONF over SSHv2**: [RFC 6241](https://www.rfc-editor.org/rfc/rfc6241.html) and [RFC 6242](https://www.rfc-editor.org/rfc/rfc6242.html), with end-of-message (base:1.0) and chunked (base:1.1) framing. Password, key-based and keyboard-interactive authentication.
+* **Connection control**: several parallel sessions to several devices; you pick which session an RPC goes to. That allows flows like `lock` > `edit-config` > `validate` > `confirmed-commit` > `confirm` > `unlock`, with one-click `<get>`, `<get-config>`, `<lock>`, `<validate>`, `<discard>` and `<commit>`.
+* **YANG download**: fetch the device YANG modules from the YANG library with `<get-schema>`.
+* **Access to SSH banners and `<hello>` messages.**
+* [Event notifications](#event-notifications), [containerlab integration](#containerlab) and the [XML Navigator](#xml-navigator), described below.
 
-If you require advanced settings, like persisting the server passwords or adjusting the client capabilities, you will find those options as part of the extension settings.
+### Event notifications
 
-## Supported Features
+[RFC 5277](https://www.rfc-editor.org/rfc/rfc5277.html) subscriptions. Received notifications are buffered and counted in the status bar; click the counter to open them in a new document, which clears the buffer.
 
-* **Support for NETCONF over SSHv2**
+![using-notifications](https://raw.githubusercontent.com/nokia-steward/vscode-netconf/main/resources/using-notifications.gif)
 
-  [RFC 6241](https://tools.ietf.org/html/rfc6241) and
-  [RFC 6242](https://tools.ietf.org/html/rfc6242) compliant NETCONF client,
-  fully integrated with Visual Studio Code. Both **end-of-message framing*
-  and *chunked-framing* (base:1.0 and base:1.1) are supported.
-  
-* **Authentication support: username/password and key-based**
+### containerlab
 
-* **Connection control**
+With [vscode-containerlab](https://github.com/srl-labs/vscode-containerlab) installed, lab nodes get a **NETCONF** action: connect without configuring anything (containerlab hostname, default user, key-based authentication, then a password prompt as fallback), or save the node as a managed device.
 
-  The user has control when to connect/disconnect to a NETCONF server.
-  Multiple parallel NETCONF sessions are supported, while the user
-  can decide, which RPC is send over which connection.
-  
-  This allows execute complex flows like `lock` > `edit-config` >
-  `validate` > `confirmed-commit` > `confirm` > `unlock`. It's also
-  an enabler to receive event notifications (see below). Detailed logs
-  (per connection) are available using OUTPUT channels.
+![using-clab](https://raw.githubusercontent.com/nokia-steward/vscode-netconf/main/resources/using-clab.gif)
 
-* **Support for NETCONF event notifications**
+### XML Navigator
 
-  The `vscode-netconf` extension is
-  [RFC 5277](https://tools.ietf.org/html/rfc6241) compliant to receive
-  NETCONF event notifications. Events will be buffered and while the
-  status-bar shows the number of received events. By clicking on the
-  events icon in the status-bar, a new TextDocument containing the
-  buffered notifications will be opened and the buffer gets cleared.
+A side-by-side view to navigate, view and edit NETCONF requests and responses, opened like the Markdown preview (`Cmd+Shift+V` / `Ctrl+Shift+V`, editor title button or Command Palette). It follows the active XML editor.
 
-  ![using-notifications](https://raw.githubusercontent.com/nokia/vscode-netconf/master/resources/using-notifications.gif)
+* A path-based navigation bar with suggestions builds the element path segment by segment.
+* **Element View** edits a single element; **Table View** edits sibling elements with the same tag spreadsheet-style, with nested containers flattened.
+* Edits go to the XML document and support Undo/Redo. Use **Reveal in XML Navigator** on a selected tag to jump to it.
+* The Navigator has no schema knowledge (YANG or XSD): no type validation and no list keys. Multi-cell copy, paste and delete, and editing nested tables, are experimental; review the resulting XML.
 
+![using-xml-navigator](https://raw.githubusercontent.com/nokia-steward/vscode-netconf/main/resources/using-xml-navigator.gif)
 
-* **Examples library**
+---
 
-  NETCONF request examples are available from
-  https://github.com/nokia/netconf-examples and can be added to the `vscode`
-  workspace.
+## Settings
 
-  By default, the example library will be cloned to the users home directory.
-  You can set the `git.defaultCloneDirectory` in the Visual Studio Code
-  settings to an alternative folder like "~/Development" based on your
-  personal needs.
+Device entries are managed from the NETCONF view. For advanced options, such as per-device client capabilities or keepalives, edit the extension settings.
 
-* **Access to server SSH greetings, SSH banner**
+| Setting | Default | Purpose |
+|---|---|---|
+| `netconf.serverList` | `[]` | Managed devices: `host`, `port`, `username`, `clientCapabilities`, `keepaliveInterval`, `keepaliveCountMax` |
+| `netconf.examplesURL` | `https://github.com/nokia-steward/netconf-examples.git` | Git repository cloned by the examples button |
+| `netconf.autoOpenResponses` | `true` | Open non-`<ok>` responses in a new editor automatically |
+| `netconf.prettify` | `false` | Pretty-print XML responses (useful for minified replies) |
+| `netconf.keysFile` | `~/.ssh/id_rsa` | Private key for key-based authentication |
+| `netconf.defaultUser` / `netconf.defaultPort` | `admin` / `830` | Used when a device entry has none |
+| `netconf.defaultCapabilities` | base:1.0, base:1.1 | Client capabilities in `<hello>` when a device entry has none |
+| `netconf.yangRevisions` | `false` | Include revisions in downloaded YANG file names |
+| `netconf.sshDebug` | `false` | ssh2 debug logs in *Help > Toggle Developer Tools* console, for handshake or cipher issues |
 
-* **Access to NETCONF `<hello/>` messages**
-
-* **Option: Prettify XML**
-
-  From the extension settings it is possible to activate the
-  `NETCONF: prettify` option. This is useful, when NETCONF servers return
-  minified XML.
-
-* **Option: Auto-open Response Files**
-
-  The `NETCONF: Auto-open Response Files` setting controls whether new file 
-  tabs are automatically opened when NETCONF responses are received from the 
-  router. When disabled, responses are still logged but won't automatically 
-  open new file tabs. User-initiated actions (like clicking "Open" on 
-  notifications or manually sending custom RPCs) will still open files 
-  regardless of this setting. Default: enabled.
-
-* **Option: SSH debug**
-
-  To troubleshoot SSHv2 related issues, like handshake problems around
-  ciphers, and key-exchange algorithms, SSH debugging can be enabled.
-  To check the logs, use the console-view part of `Developer tools`
-  (accessible from `Help`).
-
-* **Integration with vscode-containerlab**
-
-  Create connections to nodes managed by containerlab, without the need
-  to configure connection details. Extension will use containerlab hostname,
-  default user and key-based authentication. Fallback to password-based
-  authentication, while user is prompted to provide connecting details.
-  Default settings can be tuned as needed.
-
-  ![using-clab](https://raw.githubusercontent.com/nokia/vscode-netconf/master/resources/using-clab.gif)
-
-* **XML Navigator**
-
-  The extension includes XML Navigator to navigate, view, and edit
-  NETCONF requests and responses side-by-side with the text editor.
-
-  The XML Navigator works like the Markdown preview: once you have an XML file
-  open, launch it from the Command Palette or the editor title bar button. The
-  Navigator opens in a split pane beside the XML editor and stays in sync with
-  the active document. You only need one XML Navigator at a time; if you switch
-  to a different XML document, the Navigator follows that document.
-
-  The Navigator has no knowledge of the underlying schema (YANG or XSD). It
-  detects tables automatically when it finds sibling elements with the same
-  XML tag name. As a result, there is no type validation and no handling of
-  concepts such as list keys.
-
-  Use the navigation bar to browse the element tree—it builds the path segment
-  by segment. Depending on context you see either Element View or Table View.
-  Edits are applied to the underlying XML document and support Undo/Redo.
-
-  Sync from editor to Navigator is not automatic: use the context menu on
-  selected XML tags to update the Navigator to the corresponding path. When
-  you change context or focus an input in the Navigator, it shows you the
-  corresponding element or section in the editor.
-
-  Table View lets you edit directly, spreadsheet-style. Tables are flattened to
-  include nested child containers.
-
-  *Experimental:* Multi-cell copy, paste, and delete, as well as editing nested
-  tables, are still experimental and may fail or produce invalid XML. Always
-  review the resulting XML after editing.
-
-  ![using-xml-navigator](https://raw.githubusercontent.com/nokia/vscode-netconf/master/resources/using-xml-navigator.gif)
-
+---
 
 ## Compatibility
 
-Following vendors and device families have been tested so far:
+Tested so far with:
 
 | Vendor | Product Family | Router OS |
 |---|---|---|
@@ -167,36 +106,36 @@ Following vendors and device families have been tested so far:
 | H3C | CR16005E | *dev-load* |
 | Arista | cEOS | EOS 4.33 |
 
+Access to further equipment (preferably virtual routers or container images), test licenses and basic instructions helps us extend testing and compatibility.
 
-We don't mind to get access to 3rd party equipment (preferred virtual
-router/simulator images as virtual-machine or docker), test licenses and
-some basic instructions to extend the scope of our testing, improve
-compatibility and extend the capabilities.
+---
+
+## Development
+
+Requires [Node.js](https://nodejs.org/) 22 or newer.
+
+```bash
+git clone https://github.com/nokia-steward/vscode-netconf
+cd vscode-netconf
+npm ci
+npm run lint && npm run typecheck && npm run test:unit
+npm run package          # builds netconf-client-<version>.vsix
+```
+
+Press **F5** in VS Code to start an Extension Development Host. CI runs the same checks on every pull request; `npm run audit` checks the production dependencies, and Dependabot proposes upgrades weekly.
+See [CONTRIBUTING.md](https://github.com/nokia-steward/vscode-netconf/blob/main/CONTRIBUTING.md) and [SECURITY.md](https://github.com/nokia-steward/vscode-netconf/blob/main/SECURITY.md).
+
+---
 
 ## Known issues
 
-* NETCONF responses are opened as new `TextDocument`. Visual Studio Code is
-  automatically setting the `isDirty` tag, while you can't simple close the
-  document as the `Save As` dialogue will always show up.
+* Responses open as *Untitled* documents marked dirty, so closing one shows the *Save As* dialog, and tabs can't get meaningful names. See VS Code issues [#154664](https://github.com/microsoft/vscode/issues/154664) and [#41909](https://github.com/microsoft/vscode/issues/41909).
+* VS Code notifications are plain text without line breaks, so SSH banners don't display nicely.
 
-  Related to vscode-issue [#154664](https://github.com/microsoft/vscode/issues/154664).
-
-* NETCONF responses will open as `Untitled TextDocument`. It's not possible
-  to provide meaningful tab-names. Ideally, we would pre-define a file://
-  location, that it could be saved by simply doing CTRL-S / CMD-S without
-  `Save As` popup.
-
-  Related to vscode-issue [#41909](https://github.com/microsoft/vscode/issues/41909).
-
-* The vscode-netconf extension uses the API methods `showInformationMessage()`,
-  `showWarningMessage()`, and `showErrorMessage()`. Messages are displayed as plain
-  text without differentiation between message title and details and there is no
-  possibility to show preformatted text and enforce line-breaks. In consequence,
-  SSH banners are not displayed very nicely.
+---
 
 ## License
 
-This project is licensed under the BSD 3-Clause license - see the
-[LICENSE](https://github.com/nokia/vscode-netconf/blob/master/LICENSE).
+BSD 3-Clause, see [LICENSE](https://github.com/nokia-steward/vscode-netconf/blob/main/LICENSE).
 
 **Copyright (c) 2026 NOKIA**
