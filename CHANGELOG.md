@@ -124,7 +124,8 @@ Notable changes to the "vscode-netconf" extension are documented in this file.
 * Security: `fast-xml-parser` upgraded to 5.12 (GHSA-gh4j-gqv2-49f6, GHSA-474x-hrwr-fgx4).
   Parsing, validation and `<hello>` building are unchanged.
 * Removed the unused runtime dependencies `@xmldom/xmldom`, `xpath` and `license-checker`.
-* Development tools upgraded (`esbuild` 0.28, `mocha` 12, patched `glob` and `minimatch`), so
+* Development tools upgraded (`esbuild` 0.28, `mocha` 12, `@vscode/vsce` 4, `@vscode/test-electron` 3,
+  patched `glob` and `minimatch`), so
   `npm audit` reports no known vulnerabilities.
 * `package-lock.json` is now committed. The VSIX no longer contains sources, tests or tool configs.
 * New GitHub workflows: CI (lint, type check, unit tests, VSIX build) and security

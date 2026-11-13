@@ -4,11 +4,29 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Minor and patch updates are grouped; each major update gets its own pull request,
+    # so one breaking upgrade does not block the others.
     groups:
       production:
         dependency-type: production
+        update-types: [minor, patch]
       development:
         dependency-type: development
+        update-types: [minor, patch]
+    ignore:
+      # Types must match the oldest supported VS Code (engines.vscode ^1.95, Node 20 extension host).
+      - dependency-name: "@types/vscode"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # vitest 5 needs @types/node 22 or newer.
+      - dependency-name: vitest
+        update-types: ["version-update:semver-major"]
+      # ESLint 10 needs the flat-config migration; typescript-eslint 8 supports TypeScript < 6.1.
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
