@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Lint, test and package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Package VSIX
+        run: npm run package
+
+      - name: Check VSIX contents
+        run: |
+          if npx @vscode/vsce ls | grep -E '^(src/|out/test/)|\.test\.js$'; then
+            echo "VSIX contains sources or tests, check .vscodeignore" >&2
+            exit 1
+          fi
+
+      - name: Upload VSIX
+        uses: actions/upload-artifact@v7
+        with:
+          name: vscode-netconf-vsix
+          path: '*.vsix'
+          if-no-files-found: error

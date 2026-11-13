@@ -2,7 +2,7 @@
     "name": "netconf-client",
     "displayName": "NETCONF client for Visual Studio Code",
     "description": "NETCONF client by Nokia",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "author": {
         "name": "Sven Wisotzky",
         "url": "https://www.linkedin.com/in/sven-wisotzky-44788333"
@@ -24,13 +24,14 @@
     "extensionKind": [
         "workspace"
     ],
-    "license": "BSD 3-Clause",
+    "license": "BSD-3-Clause",
     "galleryBanner": {
         "color": "#005AFF",
         "theme": "dark"
     },
     "engines": {
-        "vscode": "^1.95.0"
+        "vscode": "^1.95.0",
+        "node": ">=22"
     },
     "categories": [
         "Other"
@@ -41,8 +42,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/nokia/vscode-netconf"
+        "url": "https://github.com/nokia-steward/vscode-netconf"
     },
+    "bugs": {
+        "url": "https://github.com/nokia-steward/vscode-netconf/issues"
+    },
+    "homepage": "https://github.com/nokia-steward/vscode-netconf#readme",
     "main": "./out/extension.js",
     "contributes": {
         "viewsContainers": {
@@ -648,7 +653,7 @@
                     "markdownDescription": "Git Repository with NETCONF examples.",
                     "scope": "machine",
                     "type": "string",
-                    "default": "https://github.com/nokia/netconf-examples.git"
+                    "default": "https://github.com/nokia-steward/netconf-examples.git"
                 },
                 "netconf.autoOpenResponses": {
                     "title": "Automatically Open Responses",
@@ -675,7 +680,10 @@
         "test:unit": "vitest run",
         "test:unit:watch": "vitest",
         "test:integration": "node out/test/run-tests.js",
-        "lint": "eslint src --ext ts"
+        "lint": "eslint src --ext ts --max-warnings 0",
+        "typecheck": "tsc --noEmit -p ./",
+        "audit": "npm audit --omit=dev",
+        "package": "vsce package"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.10",
@@ -686,25 +694,22 @@
         "@typescript-eslint/parser": "^8.18.0",
         "@vscode/test-electron": "^2.5.2",
         "@vscode/vsce": "^3.6.2",
-        "esbuild": "^0.19.0",
+        "esbuild": "^0.28.2",
         "eslint": "^8.57.1",
-        "mocha": "^11.7.5",
+        "mocha": "^12.0.3",
         "typescript": "^5.0.4",
         "vitest": "^4.0.18"
     },
     "dependencies": {
         "@vscode/codicons": "^0.0.44",
-        "@xmldom/xmldom": "^0.8.10",
-        "fast-xml-parser": "^4.3.2",
+        "fast-xml-parser": "^5.12.0",
         "he": "^1.2.0",
-        "license-checker": "^25.0.1",
         "sax": "^1.4.4",
         "ssh2": ">=1.16.0",
-        "xml-formatter": "^3.3.2",
-        "xpath": "^0.0.32"
+        "xml-formatter": "^3.3.2"
     },
-    "__metadata": {
-        "isApplicationScoped": false,
-        "installedTimestamp": 1680092475295
+    "overrides": {
+        "minimatch@^10": "^11.0.8",
+        "glob@^13": "^14.0.6"
     }
 }
